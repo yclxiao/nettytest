@@ -3,7 +3,9 @@ package com.ycl.nettytest.demo.protocol;
 import com.ycl.nettytest.demo.protocol.Packet;
 import com.ycl.nettytest.demo.protocol.command.Command;
 import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
+import com.ycl.nettytest.demo.protocol.request.MessageRequestPacket;
 import com.ycl.nettytest.demo.protocol.response.LoginResponsePacket;
+import com.ycl.nettytest.demo.protocol.response.MessageResponsePacket;
 import com.ycl.nettytest.demo.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -31,6 +33,8 @@ public class PacketCodeC {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
     }
 
     public ByteBuf encode(Packet packet) {
