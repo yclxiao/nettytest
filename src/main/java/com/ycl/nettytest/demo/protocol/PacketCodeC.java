@@ -1,8 +1,9 @@
-package com.ycl.nettytest.demo.protocol.command;
+package com.ycl.nettytest.demo.protocol;
 
+import com.ycl.nettytest.demo.protocol.Packet;
+import com.ycl.nettytest.demo.protocol.command.Command;
+import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
 import com.ycl.nettytest.demo.serialize.Serializer;
-import com.ycl.nettytest.demo.serialize.SerializerAlgorithm;
-import com.ycl.nettytest.demo.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 

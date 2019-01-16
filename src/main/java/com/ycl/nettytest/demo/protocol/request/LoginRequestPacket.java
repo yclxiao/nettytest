@@ -1,5 +1,7 @@
-package com.ycl.nettytest.demo.protocol.command;
+package com.ycl.nettytest.demo.protocol.request;
 
+import com.ycl.nettytest.demo.protocol.command.Command;
+import com.ycl.nettytest.demo.protocol.Packet;
 import lombok.Data;
 
 /**

@@ -1,4 +1,4 @@
-package com.ycl.nettytest.demo.protocol.command;
+package com.ycl.nettytest.demo.protocol;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
