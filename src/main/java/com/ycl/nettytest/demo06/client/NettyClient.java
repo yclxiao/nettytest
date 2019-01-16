@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyClient {
 
-    public static final int MAX_RETRY = 5;
+    private static final int MAX_RETRY = 5;
     private static final int BEGIN_PORT = 8000;
     private static final String HOST = "127.0.0.1";
 
@@ -37,7 +37,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-
+                        socketChannel.pipeline().addLast(new FirstClientHandler());
                     }
                 });
 
