@@ -1,4 +1,4 @@
-package com.ycl.nettytest.demo06.server;
+package com.ycl.nettytest.demo.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;

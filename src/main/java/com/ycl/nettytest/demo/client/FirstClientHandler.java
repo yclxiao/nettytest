@@ -1,4 +1,4 @@
-package com.ycl.nettytest.demo06.client;
+package com.ycl.nettytest.demo.client;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
