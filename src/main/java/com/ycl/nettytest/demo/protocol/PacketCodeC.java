@@ -3,6 +3,7 @@ package com.ycl.nettytest.demo.protocol;
 import com.ycl.nettytest.demo.protocol.Packet;
 import com.ycl.nettytest.demo.protocol.command.Command;
 import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
+import com.ycl.nettytest.demo.protocol.response.LoginResponsePacket;
 import com.ycl.nettytest.demo.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -19,14 +20,17 @@ import java.util.Map;
 public class PacketCodeC {
 
     private static final int MAGIC_NUMBER = 0x123456;
-    private static final Map<Byte, Serializer> serializerMap;
-    private static final Map<Byte, Class<? extends Packet>> packetTypeMap;
+    public static final PacketCodeC INSTANCE = new PacketCodeC();
 
-    static {
+    private final Map<Byte, Serializer> serializerMap;
+    private final Map<Byte, Class<? extends Packet>> packetTypeMap;
+
+    private PacketCodeC() {
         serializerMap = new HashMap<>();
         serializerMap.put(Serializer.JSON_SERIALIZER, Serializer.DEFAULT);
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
     }
 
     public ByteBuf encode(Packet packet) {

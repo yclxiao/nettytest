@@ -20,6 +20,7 @@ public abstract class Packet {
 
     /**
      * 指令
+     *
      * @return
      */
     @JSONField(serialize = false)

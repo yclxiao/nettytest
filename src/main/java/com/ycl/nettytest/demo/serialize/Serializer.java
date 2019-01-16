@@ -31,6 +31,7 @@ public interface Serializer {
 
     /**
      * 二进制转成java对象
+     *
      * @param clazz
      * @param bytes
      * @param <T>
