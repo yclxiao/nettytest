@@ -3,9 +3,7 @@ package com.ycl.nettytest.demo.server;
 import com.ycl.nettytest.demo.codec.PacketDecoder;
 import com.ycl.nettytest.demo.codec.PacketEncoder;
 import com.ycl.nettytest.demo.codec.Spliter;
-import com.ycl.nettytest.demo.server.handler.AuthHandler;
-import com.ycl.nettytest.demo.server.handler.LoginRequestHandler;
-import com.ycl.nettytest.demo.server.handler.MessageRequestHandler;
+import com.ycl.nettytest.demo.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -47,6 +45,8 @@ public class NettyServer {
                         nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
                         nioSocketChannel.pipeline().addLast(new AuthHandler());
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new LogoutRequestHandler());
                         nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });

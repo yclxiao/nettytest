@@ -2,9 +2,13 @@ package com.ycl.nettytest.demo.protocol;
 
 import com.ycl.nettytest.demo.protocol.Packet;
 import com.ycl.nettytest.demo.protocol.command.Command;
+import com.ycl.nettytest.demo.protocol.request.CreateGroupRequestPacket;
 import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
+import com.ycl.nettytest.demo.protocol.request.LogoutRequestPacket;
 import com.ycl.nettytest.demo.protocol.request.MessageRequestPacket;
+import com.ycl.nettytest.demo.protocol.response.CreateGroupResponsePacket;
 import com.ycl.nettytest.demo.protocol.response.LoginResponsePacket;
+import com.ycl.nettytest.demo.protocol.response.LogoutResponsePacket;
 import com.ycl.nettytest.demo.protocol.response.MessageResponsePacket;
 import com.ycl.nettytest.demo.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
@@ -35,6 +39,10 @@ public class PacketCodeC {
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
     }
 
     public void encode(ByteBuf out,Packet packet) {

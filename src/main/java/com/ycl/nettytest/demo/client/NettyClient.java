@@ -1,6 +1,10 @@
 package com.ycl.nettytest.demo.client;
 
+import com.ycl.nettytest.demo.client.console.ConsoleCommandManager;
+import com.ycl.nettytest.demo.client.console.LoginConsoleCommand;
+import com.ycl.nettytest.demo.client.handler.CreateGroupResponseHandler;
 import com.ycl.nettytest.demo.client.handler.LoginResponseHandler;
+import com.ycl.nettytest.demo.client.handler.LogoutResponseHandler;
 import com.ycl.nettytest.demo.client.handler.MessageResponseHandler;
 import com.ycl.nettytest.demo.codec.PacketDecoder;
 import com.ycl.nettytest.demo.codec.PacketEncoder;
@@ -52,7 +56,9 @@ public class NettyClient {
                         socketChannel.pipeline().addLast(new Spliter());
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
+                        socketChannel.pipeline().addLast(new LogoutResponseHandler());
                         socketChannel.pipeline().addLast(new MessageResponseHandler());
+                        socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
                         socketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });
@@ -80,44 +86,18 @@ public class NettyClient {
 
     private static void startConsoleThread(Channel channel) {
         Scanner sc = new Scanner(System.in);
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                /*if (LoginUtil.hasLogin(channel)) {
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
-
-                    System.out.println("输入消息发送至服务端: " + line);
-
-                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-                    messageRequestPacket.setMessage(line);
-
-                    for (int i = 0; i < 1000; i++) {
-
-                        channel.writeAndFlush(messageRequestPacket);
-                    }
-                }*/
-
                 if (!SessionUtil.hasLogin(channel)) {
-                    System.out.print("输入用户名登录: ");
-                    String username = sc.nextLine();
-                    loginRequestPacket.setUsername(username);
-                    loginRequestPacket.setPassword("pwd");
-                    channel.writeAndFlush(loginRequestPacket);
-                    waitForLoginResponse();
+                    loginConsoleCommand.exec(sc, channel);
                 } else {
-                    String toUserId = sc.next();
-                    String message = sc.next();
-                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    consoleCommandManager.exec(sc, channel);
                 }
             }
         }).start();
-    }
-
-    private static void waitForLoginResponse() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {
-        }
     }
 }

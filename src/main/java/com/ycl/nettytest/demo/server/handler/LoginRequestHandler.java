@@ -3,6 +3,7 @@ package com.ycl.nettytest.demo.server.handler;
 import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
 import com.ycl.nettytest.demo.protocol.response.LoginResponsePacket;
 import com.ycl.nettytest.demo.session.Session;
+import com.ycl.nettytest.demo.util.IDUtil;
 import com.ycl.nettytest.demo.util.LoginUtil;
 import com.ycl.nettytest.demo.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,7 +28,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
-            String userId = randomUserId();
+            String userId = IDUtil.randomId();
             loginResponsePacket.setUserId(userId);
 //            LoginUtil.markAsLogin(channelHandlerContext.channel());
 
@@ -47,10 +48,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return "pwd".equals(loginRequestPacket.getPassword());
-    }
-
-    private static String randomUserId() {
-        return UUID.randomUUID().toString().split("-")[0];
     }
 
     @Override
