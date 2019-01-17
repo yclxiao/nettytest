@@ -2,7 +2,9 @@ package com.ycl.nettytest.demo.client.handler;
 
 import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
 import com.ycl.nettytest.demo.protocol.response.LoginResponsePacket;
+import com.ycl.nettytest.demo.session.Session;
 import com.ycl.nettytest.demo.util.LoginUtil;
+import com.ycl.nettytest.demo.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -17,7 +19,7 @@ import java.util.UUID;
  */
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
 
-    @Override
+    /*@Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println(new Date() + ": 客户端开始登陆");
 
@@ -27,15 +29,26 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         loginRequestPacket.setPassword("xiao");
 
         ctx.channel().writeAndFlush(loginRequestPacket);
-    }
+    }*/
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) throws Exception {
-        if (loginResponsePacket.isSuccess()) {
+        /*if (loginResponsePacket.isSuccess()) {
             LoginUtil.markAsLogin(channelHandlerContext.channel());
             System.out.println(new Date() + ": 客户端登录成功");
         } else {
             System.out.println(new Date() + ": 客户端登陆失败，原因：" + loginResponsePacket.getReason());
+        }*/
+
+        String userId = loginResponsePacket.getUserId();
+        String userName = loginResponsePacket.getUserName();
+
+        if (loginResponsePacket.isSuccess()) {
+            System.out.println("[" + userName + "]登录成功，userId 为: " + loginResponsePacket.getUserId());
+
+            SessionUtil.bindSession(new Session(userId,userName),channelHandlerContext.channel());
+        } else {
+            System.out.println("[" + userName + "]登录失败，原因：" + loginResponsePacket.getReason());
         }
     }
 

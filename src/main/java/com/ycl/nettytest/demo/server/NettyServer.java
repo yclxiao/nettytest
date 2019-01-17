@@ -62,7 +62,6 @@ public class NettyServer {
                 System.out.println("端口[" + beginPort + "]绑定失败！");
             }
         });
-
     }
 
 }

@@ -2,7 +2,9 @@ package com.ycl.nettytest.demo.protocol.request;
 
 import com.ycl.nettytest.demo.protocol.Packet;
 import com.ycl.nettytest.demo.protocol.command.Command;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * User: OF1089 杨成龙
@@ -11,8 +13,11 @@ import lombok.Data;
  * Desc: 类描述
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageRequestPacket extends Packet {
 
+    private String toUserId;
     private String message;
 
     @Override
