@@ -3,7 +3,7 @@ package com.ycl.nettytest.demo.server;
 import com.ycl.nettytest.demo.codec.PacketDecoder;
 import com.ycl.nettytest.demo.codec.PacketEncoder;
 import com.ycl.nettytest.demo.codec.Spliter;
-import com.ycl.nettytest.demo.server.handler.FirstServerHandler;
+import com.ycl.nettytest.demo.server.handler.AuthHandler;
 import com.ycl.nettytest.demo.server.handler.LoginRequestHandler;
 import com.ycl.nettytest.demo.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -42,10 +42,10 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-//                        nioSocketChannel.pipeline().addLast(new FirstServerHandler());
                         nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(new PacketDecoder());
                         nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new AuthHandler());
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                         nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     }

@@ -1,17 +1,13 @@
 package com.ycl.nettytest.demo.client;
 
-import com.ycl.nettytest.demo.client.handler.FirstClientHandler;
 import com.ycl.nettytest.demo.client.handler.LoginResponseHandler;
 import com.ycl.nettytest.demo.client.handler.MessageResponseHandler;
 import com.ycl.nettytest.demo.codec.PacketDecoder;
 import com.ycl.nettytest.demo.codec.PacketEncoder;
 import com.ycl.nettytest.demo.codec.Spliter;
-import com.ycl.nettytest.demo.protocol.PacketCodeC;
 import com.ycl.nettytest.demo.protocol.request.MessageRequestPacket;
 import com.ycl.nettytest.demo.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -51,7 +47,6 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println("initChannel");
-//                        socketChannel.pipeline().addLast(new FirstClientHandler());
                         socketChannel.pipeline().addLast(new Spliter());
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
