@@ -37,35 +37,32 @@ public class PacketCodeC {
         packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
     }
 
-    public ByteBuf encode(Packet packet) {
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
+    public void encode(ByteBuf out,Packet packet) {
 
         byte[] bytes = Serializer.DEFAULT.serializer(packet);
 
-        byteBuf.writeInt(MAGIC_NUMBER);
-        byteBuf.writeByte(packet.getVersion());
-        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
-        byteBuf.writeByte(packet.getCommand());
-        byteBuf.writeInt(bytes.length);
-        byteBuf.writeBytes(bytes);
-
-        return byteBuf;
+        out.writeInt(MAGIC_NUMBER);
+        out.writeByte(packet.getVersion());
+        out.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+        out.writeByte(packet.getCommand());
+        out.writeInt(bytes.length);
+        out.writeBytes(bytes);
     }
 
-    public Packet decode(ByteBuf byteBuf) {
+    public Packet decode(ByteBuf in) {
         //跳过魔数字
-        byteBuf.skipBytes(4);
+        in.skipBytes(4);
         //跳过版本号
-        byteBuf.skipBytes(1);
+        in.skipBytes(1);
         //获取序列化算法
-        byte serializerAlgorithm = byteBuf.readByte();
+        byte serializerAlgorithm = in.readByte();
         //获取指令
-        byte command = byteBuf.readByte();
+        byte command = in.readByte();
         //获取数据包长度
-        int length = byteBuf.readInt();
+        int length = in.readInt();
 
         byte[] bytes = new byte[length];
-        byteBuf.readBytes(bytes);
+        in.readBytes(bytes);
 
         Serializer serializer = getSerializer(serializerAlgorithm);
         Class<? extends Packet> requestType = getRequestType(command);

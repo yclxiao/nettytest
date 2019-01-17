@@ -1,10 +1,15 @@
 package com.ycl.nettytest.demo.client;
 
+import com.ycl.nettytest.demo.client.handler.LoginResponseHandler;
+import com.ycl.nettytest.demo.client.handler.MessageResponseHandler;
+import com.ycl.nettytest.demo.codec.PacketDecoder;
+import com.ycl.nettytest.demo.codec.PacketEncoder;
 import com.ycl.nettytest.demo.protocol.PacketCodeC;
 import com.ycl.nettytest.demo.protocol.request.MessageRequestPacket;
 import com.ycl.nettytest.demo.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -44,7 +49,11 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println("initChannel");
-                        socketChannel.pipeline().addLast(new ClientHandler());
+
+                        socketChannel.pipeline().addLast(new PacketDecoder());
+                        socketChannel.pipeline().addLast(new LoginResponseHandler());
+                        socketChannel.pipeline().addLast(new MessageResponseHandler());
+                        socketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
@@ -73,15 +82,15 @@ public class NettyClient {
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 if (LoginUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送至服务端: ");
                     Scanner sc = new Scanner(System.in);
                     String line = sc.nextLine();
+
+                    System.out.println("输入消息发送至服务端: " + line);
 
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
 
-                    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(messageRequestPacket);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(messageRequestPacket);
                 }
             }
         }).start();
