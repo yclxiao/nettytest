@@ -2,6 +2,7 @@ package com.ycl.nettytest.demo.server.handler;
 
 import com.ycl.nettytest.demo.protocol.request.LoginRequestPacket;
 import com.ycl.nettytest.demo.protocol.response.LoginResponsePacket;
+import com.ycl.nettytest.demo.util.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -21,6 +22,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         if (valid(loginRequestPacket)) {
             System.out.println(new Date() + ": 登陆成功！");
             loginResponsePacket.setSuccess(true);
+            LoginUtil.markAsLogin(channelHandlerContext.channel());
         } else {
             System.out.println(new Date() + ": 登陆失败！");
             loginResponsePacket.setSuccess(false);

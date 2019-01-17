@@ -1,9 +1,11 @@
 package com.ycl.nettytest.demo.client;
 
+import com.ycl.nettytest.demo.client.handler.FirstClientHandler;
 import com.ycl.nettytest.demo.client.handler.LoginResponseHandler;
 import com.ycl.nettytest.demo.client.handler.MessageResponseHandler;
 import com.ycl.nettytest.demo.codec.PacketDecoder;
 import com.ycl.nettytest.demo.codec.PacketEncoder;
+import com.ycl.nettytest.demo.codec.Spliter;
 import com.ycl.nettytest.demo.protocol.PacketCodeC;
 import com.ycl.nettytest.demo.protocol.request.MessageRequestPacket;
 import com.ycl.nettytest.demo.util.LoginUtil;
@@ -49,7 +51,8 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println("initChannel");
-
+//                        socketChannel.pipeline().addLast(new FirstClientHandler());
+                        socketChannel.pipeline().addLast(new Spliter());
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
                         socketChannel.pipeline().addLast(new MessageResponseHandler());
@@ -90,7 +93,10 @@ public class NettyClient {
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
 
-                    channel.writeAndFlush(messageRequestPacket);
+                    for (int i = 0; i < 1000; i++) {
+
+                        channel.writeAndFlush(messageRequestPacket);
+                    }
                 }
             }
         }).start();

@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class PacketCodeC {
 
-    private static final int MAGIC_NUMBER = 0x123456;
+    public static final int MAGIC_NUMBER = 0x123456;
     public static final PacketCodeC INSTANCE = new PacketCodeC();
 
     private final Map<Byte, Serializer> serializerMap;
