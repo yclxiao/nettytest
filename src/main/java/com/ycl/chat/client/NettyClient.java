@@ -6,6 +6,7 @@ import com.ycl.chat.client.handler.*;
 import com.ycl.chat.codec.PacketDecoder;
 import com.ycl.chat.codec.PacketEncoder;
 import com.ycl.chat.codec.Spliter;
+import com.ycl.chat.handler.IMIdleStateHandler;
 import com.ycl.chat.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -47,6 +48,7 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println("initChannel");
+                        socketChannel.pipeline().addLast(new IMIdleStateHandler());
                         socketChannel.pipeline().addLast(new Spliter());
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
@@ -58,6 +60,8 @@ public class NettyClient {
                         socketChannel.pipeline().addLast(new GroupMessageResponseHandler());
                         socketChannel.pipeline().addLast(new QuitGroupResponseHandler());
                         socketChannel.pipeline().addLast(new PacketEncoder());
+
+                        socketChannel.pipeline().addLast(new HeartBeatTimerHandler());
                     }
                 });
 

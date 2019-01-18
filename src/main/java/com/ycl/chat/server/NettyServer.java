@@ -3,6 +3,7 @@ package com.ycl.chat.server;
 import com.ycl.chat.codec.PacketDecoder;
 import com.ycl.chat.codec.PacketEncoder;
 import com.ycl.chat.codec.Spliter;
+import com.ycl.chat.handler.IMIdleStateHandler;
 import com.ycl.chat.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -40,9 +41,11 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
+                        nioSocketChannel.pipeline().addLast(new IMIdleStateHandler());
                         nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(new PacketDecoder());
                         nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
 
                         nioSocketChannel.pipeline().addLast(IMHandler.INSTANCE);//平行的handler合并到一处

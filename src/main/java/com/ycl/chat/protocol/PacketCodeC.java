@@ -27,6 +27,7 @@ public class PacketCodeC {
         serializerMap = new HashMap<>();
         serializerMap.put(Serializer.JSON_SERIALIZER, Serializer.DEFAULT);
         packetTypeMap = new HashMap<>();
+
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
@@ -43,9 +44,11 @@ public class PacketCodeC {
         packetTypeMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
         packetTypeMap.put(Command.GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
         packetTypeMap.put(Command.GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
+        packetTypeMap.put(Command.HEARTBEAT_REQUEST, HeartBeatRequestPacket.class);
+        packetTypeMap.put(Command.HEARTBEAT_RESPONSE, HeartBeatResponsePacket.class);
     }
 
-    public void encode(ByteBuf out,Packet packet) {
+    public void encode(ByteBuf out, Packet packet) {
 
         byte[] bytes = Serializer.DEFAULT.serializer(packet);
 
