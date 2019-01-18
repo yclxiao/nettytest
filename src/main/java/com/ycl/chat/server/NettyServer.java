@@ -47,6 +47,7 @@ public class NettyServer {
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                         nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
                         nioSocketChannel.pipeline().addLast(new ListGroupMembersRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new JoinGroupRequestHandler());
                         nioSocketChannel.pipeline().addLast(new LogoutRequestHandler());
                         nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     }
