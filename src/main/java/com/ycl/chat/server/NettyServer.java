@@ -42,15 +42,18 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                         nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(new PacketDecoder());
-                        nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new AuthHandler());
-                        nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new ListGroupMembersRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new JoinGroupRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new QuitGroupRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new GroupMessageRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new LogoutRequestHandler());
+                        nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
+
+                        nioSocketChannel.pipeline().addLast(IMHandler.INSTANCE);//平行的handler合并到一处
+//                        nioSocketChannel.pipeline().addLast(MessageRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(CreateGroupRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(ListGroupMembersRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(JoinGroupRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(QuitGroupRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(GroupMessageRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(LogoutRequestHandler.INSTANCE);
+
                         nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });

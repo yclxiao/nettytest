@@ -5,6 +5,7 @@ import com.ycl.chat.protocol.response.MessageResponsePacket;
 import com.ycl.chat.session.Session;
 import com.ycl.chat.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -14,7 +15,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * Time: 11:18 AM
  * Desc: 类描述
  */
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageRequestPacket messageRequestPacket) throws Exception {
         /*System.out.println(new Date() + ": 收到客户端消息: " + messageRequestPacket.getMessage());

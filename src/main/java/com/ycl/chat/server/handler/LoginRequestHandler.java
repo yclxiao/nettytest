@@ -5,6 +5,7 @@ import com.ycl.chat.protocol.response.LoginResponsePacket;
 import com.ycl.chat.session.Session;
 import com.ycl.chat.util.IDUtil;
 import com.ycl.chat.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,7 +17,10 @@ import java.util.Date;
  * Time: 11:18 AM
  * Desc: 类描述
  */
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginRequestPacket loginRequestPacket) throws Exception {

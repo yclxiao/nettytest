@@ -1,8 +1,10 @@
 package com.ycl.chat.server.handler;
 
 import com.ycl.chat.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * User: OF1089 杨成龙
@@ -10,7 +12,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * Time: 4:02 PM
  * Desc: 类描述
  */
+@ChannelHandler.Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter {
+
+    public static final AuthHandler INSTANCE = new AuthHandler();
+
     /*@Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (!LoginUtil.hasLogin(ctx.channel())) {

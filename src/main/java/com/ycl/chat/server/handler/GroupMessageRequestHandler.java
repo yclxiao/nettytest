@@ -3,6 +3,7 @@ package com.ycl.chat.server.handler;
 import com.ycl.chat.protocol.request.GroupMessageRequestPacket;
 import com.ycl.chat.protocol.response.GroupMessageResponsePacket;
 import com.ycl.chat.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -13,7 +14,10 @@ import io.netty.channel.group.ChannelGroup;
  * Time: 11:33 AM
  * Desc: 类描述
  */
+@ChannelHandler.Sharable
 public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<GroupMessageRequestPacket> {
+    public static final GroupMessageRequestHandler INSTANCE = new GroupMessageRequestHandler();
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, GroupMessageRequestPacket groupMessageRequestPacket) throws Exception {
         String toGroupId = groupMessageRequestPacket.getToGroupId();

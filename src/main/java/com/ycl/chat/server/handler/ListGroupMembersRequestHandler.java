@@ -4,6 +4,7 @@ import com.ycl.chat.protocol.request.ListGroupMembersRequestPacket;
 import com.ycl.chat.protocol.response.ListGroupMembersResponsePacket;
 import com.ycl.chat.session.Session;
 import com.ycl.chat.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -17,7 +18,11 @@ import java.util.stream.Collectors;
  * Time: 9:38 AM
  * Desc: 类描述
  */
+@ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+
+    public static final ListGroupMembersRequestHandler INSTANCE = new ListGroupMembersRequestHandler();
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ListGroupMembersRequestPacket listGroupMembersRequestPacket) throws Exception {
         String groupId = listGroupMembersRequestPacket.getGroupId();
