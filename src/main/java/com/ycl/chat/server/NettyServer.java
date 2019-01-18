@@ -1,5 +1,10 @@
-package com.ycl.nettytest.demo04;
+package com.ycl.chat.server;
 
+import com.ycl.chat.codec.PacketDecoder;
+import com.ycl.chat.codec.PacketEncoder;
+import com.ycl.chat.codec.Spliter;
+import com.ycl.chat.handler.IMIdleStateHandler;
+import com.ycl.chat.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -7,8 +12,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 /**
  * User: OF1089 杨成龙
@@ -38,7 +41,23 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                        System.out.println(nioSocketChannel.attr(clientKey).get());
+                        nioSocketChannel.pipeline().addLast(new IMIdleStateHandler());
+                        nioSocketChannel.pipeline().addLast(new Spliter());
+                        nioSocketChannel.pipeline().addLast(new PacketDecoder());
+                        nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
+
+                        nioSocketChannel.pipeline().addLast(IMHandler.INSTANCE);//平行的handler合并到一处
+//                        nioSocketChannel.pipeline().addLast(MessageRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(CreateGroupRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(ListGroupMembersRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(JoinGroupRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(QuitGroupRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(GroupMessageRequestHandler.INSTANCE);
+//                        nioSocketChannel.pipeline().addLast(LogoutRequestHandler.INSTANCE);
+
+                        nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });
         bindPort(serverBootstrap, BEGIN_PORT);
@@ -53,7 +72,6 @@ public class NettyServer {
                 System.out.println("端口[" + beginPort + "]绑定失败！");
             }
         });
-
     }
 
 }
